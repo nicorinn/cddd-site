@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SearchResults } from '../types';
+import { Compound, SearchResults } from '../types';
 
 const backendApi = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
@@ -7,6 +7,17 @@ const backendApi = axios.create({
 
 export async function searchFullDatabase(query: string) {
   const res = await backendApi.get<SearchResults>(`/search?q=${query}`);
+  if (res.status == 200) {
+    return res.data;
+  } else {
+    console.log(res.data);
+    console.error(`Error: status code ${res.status}`);
+    return null;
+  }
+}
+
+export async function getCompoundById(id: string) {
+  const res = await backendApi.get<Compound>(`/compound/${id}`);
   if (res.status == 200) {
     return res.data;
   } else {

@@ -11,7 +11,7 @@ interface SearchResultsListProps {
 const categoryNames = {
   clinical_annotations: 'Clinical annotations',
   companies: 'Companies',
-  compound_names: 'Compounds',
+  compounds: 'Compounds',
   diseases: 'Diseases',
   gene_targets: 'Gene targets',
   indications: 'Indications',
@@ -21,30 +21,41 @@ const categoryNames = {
   targets: 'Targets',
 };
 
-function renderCategoryResults(category: string, results: SearchResult[]) {
+function renderCategoryResults(
+  category: keyof typeof categoryNames,
+  results: SearchResult[]
+) {
   return (
     <>
       <Text color="gray" noOfLines={0} fontWeight={600} mb={3}>
-        {categoryNames[category as keyof typeof categoryNames]}
+        {categoryNames[category]}
       </Text>
       <VStack className="searchResults" spacing={0} ml={5}>
-        {results.map((result) => (
-          <Box width="100%" key={result.id}>
-            <NextLink href={`/details/${category}/${result.id}`}>
-              <Button
-                variant="ghost"
-                width="100%"
-                _hover={{ color: 'primary.lightMode' }}
-              >
-                <Box textAlign="left" width="100%">
-                  <Text color="primary.darkMode" noOfLines={0} fontWeight={400}>
-                    {result.matched_field_value}
-                  </Text>
-                </Box>
-              </Button>
-            </NextLink>
-          </Box>
-        ))}
+        {results.map((result) => {
+          const urlFragment =
+            category === 'compounds' ? 'details' : `list/${category}`;
+          return (
+            <Box width="100%" key={result.id}>
+              <NextLink href={`/${urlFragment}/${result.id}`}>
+                <Button
+                  variant="ghost"
+                  width="100%"
+                  _hover={{ color: 'primary.lightMode' }}
+                >
+                  <Box textAlign="left" width="100%">
+                    <Text
+                      color="primary.darkMode"
+                      noOfLines={0}
+                      fontWeight={400}
+                    >
+                      {result.matched_field_value}
+                    </Text>
+                  </Box>
+                </Button>
+              </NextLink>
+            </Box>
+          );
+        })}
       </VStack>
     </>
   );
@@ -57,7 +68,10 @@ function renderAllSearchResults(results: SearchResults) {
         .filter((key) => results[key as keyof SearchResults] !== null)
         .map((key) => {
           const categoryResults = results[key as keyof SearchResults];
-          return renderCategoryResults(key, categoryResults!);
+          return renderCategoryResults(
+            key as keyof SearchResults,
+            categoryResults!
+          );
         })}
     </VStack>
   );

@@ -33,7 +33,7 @@ export interface SearchResult {
 export interface SearchResults {
   clinical_annotations: SearchResult[] | null;
   companies: SearchResult[] | null;
-  compound_names: SearchResult[] | null;
+  compounds: SearchResult[] | null;
   diseases: SearchResult[] | null;
   gene_targets: SearchResult[] | null;
   indications: SearchResult[] | null;
