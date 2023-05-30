@@ -88,7 +88,9 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
             <Text as="span" fontWeight="bold">
               Discontinuation Reason:
             </Text>{' '}
-            {compound.discontinuation_reason || 'N/A'}
+            <Text overflowWrap="break-word" fontSize="md">
+              {compound.discontinuation_reason || 'N/A'}
+            </Text>
           </Text>
           <Text fontSize={fontSize}>
             <Text as="span" fontWeight="bold">
