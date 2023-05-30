@@ -23,13 +23,19 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
 
   const displayArray = (label: string, array?: string[], badge = false) => {
     return array && array.length > 0 ? (
-      <VStack align="start" spacing={1}>
+      <VStack align="start" spacing={1} overflow="hidden">
         <Text fontSize={fontSize} fontWeight="bold">
           {label}
         </Text>
         {array.map((item, i) =>
           badge ? (
-            <Badge key={i} fontSize="sm">
+            <Badge
+              key={i}
+              fontSize="sm"
+              overflow="scroll"
+              textOverflow="ellipsis"
+              maxW={400}
+            >
               {item}
             </Badge>
           ) : (
