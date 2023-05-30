@@ -83,12 +83,7 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
           {displayArray('Indications', compound.indications)}
           {displayArray('Pathway Annotations', compound.pathway_annotations)}
         </VStack>
-        <VStack
-          align="start"
-          divider={<StackDivider borderColor="gray.200" />}
-          spacing={4}
-          width={stackWidth}
-        >
+        <VStack align="start" spacing={4} width={stackWidth}>
           <Text fontSize={fontSize}>
             <Text as="span" fontWeight="bold">
               Discontinuation Reason:
@@ -107,6 +102,7 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
             </Text>{' '}
             {compound.discontinuation_phase || 'N/A'}
           </Text>
+          <Divider borderColor="gray.200" />
           <Text fontSize={fontSize}>
             <Text as="span" fontWeight="bold">
               Repurposing Efforts:
@@ -127,15 +123,25 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
           </Text>
           <Text fontSize={fontSize}>
             <Text as="span" fontWeight="bold">
+              Repurposing Company:
+            </Text>{' '}
+            {compound.repurposing_company || 'N/A'}
+          </Text>
+          <Text fontSize={fontSize}>
+            <Text as="span" fontWeight="bold">
               Updated at:
             </Text>{' '}
             {new Date(compound.updated_at).toLocaleDateString()}
+            {displayArray(
+              'Repurposing Indications',
+              compound.repurposing_indications
+            )}
           </Text>
-          {displayArray('Mechanisms of Action', compound.mechanisms_of_action)}
-          {displayArray(
-            'Repurposing Indications',
-            compound.repurposing_indications
+          {compound.mechanisms_of_action?.length && (
+            <Divider borderColor="gray.200" />
           )}
+          {displayArray('Mechanisms of Action', compound.mechanisms_of_action)}
+          {compound.targets?.length && <Divider borderColor="gray.200" />}
           {displayArray('Targets', compound.targets)}
         </VStack>
       </Flex>

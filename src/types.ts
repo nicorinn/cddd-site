@@ -20,7 +20,8 @@ export interface Compound {
   repurposing_indications?: string[];
   repurposing_phase: number;
   repurposing_updated_at: string;
-  repurposing_year: number;
+  repurposing_year?: number;
+  repurposing_company?: string;
   targets?: string[];
   updated_at: Date;
 }
@@ -41,4 +42,28 @@ export interface SearchResults {
   pathway_annotations: SearchResult[] | null;
   repurposings: SearchResult[] | null;
   targets: SearchResult[] | null;
+}
+
+type CompoundAttribute =
+  | 'clinical_annotation'
+  | 'company'
+  | 'compound'
+  | 'compound_name'
+  | 'disease'
+  | 'gene_target'
+  | 'indication'
+  | 'mechanism_of_action'
+  | 'pathway_annotation'
+  | 'repurposing'
+  | 'target';
+
+type AttributeField = Record<CompoundAttribute, any>;
+
+export interface CompoundSummary {
+  id: string;
+  name: string;
+}
+
+export interface CompoundsListResults extends AttributeField {
+  compounds: CompoundSummary[];
 }

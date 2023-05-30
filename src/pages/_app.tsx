@@ -42,7 +42,11 @@ const theme: ThemeConfig = extendTheme({
       baseStyle: {
         field: {
           backgroundColor: colors.input.background,
-          _hover: { backgroundColor: colors.input.background },
+          _hover: {
+            backgroundColor: colors.input.background,
+            border: '0 !important',
+            boxShadow: 'none !important',
+          },
           _focus: {
             backgroundColor: colors.input.focus,
             color: colors.backgroundColor.lightMode,
