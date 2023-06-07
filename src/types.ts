@@ -1,28 +1,35 @@
+export interface AttributeListItem {
+  text: string;
+  id: string;
+}
+
+type AttributeList = AttributeListItem[];
+
 export interface Compound {
-  clinical_annotations?: string[];
+  clinical_annotations?: AttributeList;
   company: string;
   company_id: string;
   created_at: string;
   discontinuation_phase: number;
   discontinuation_reason: string;
   discontinuation_year: number;
-  diseases?: string[];
-  gene_targets?: string[];
+  diseases?: AttributeList;
+  gene_targets?: AttributeList;
   id: string;
-  indications?: string[];
+  indications?: AttributeList;
   link: string;
-  mechanisms_of_action?: string[];
+  mechanisms_of_action?: AttributeList;
   name: string;
   names?: string[];
-  pathway_annotations?: string[];
+  pathway_annotations?: AttributeList;
   repurposing_efforts: string;
   repurposing_id: string;
-  repurposing_indications?: string[];
+  repurposing_indications?: AttributeList;
   repurposing_phase: number;
   repurposing_updated_at: string;
   repurposing_year?: number;
   repurposing_company?: string;
-  targets?: string[];
+  targets?: AttributeList;
   updated_at: Date;
 }
 

@@ -16,20 +16,7 @@ import { useEffect, useState } from 'react';
 import { CompoundSummary as CompoundListResult } from '@/types';
 import { getCompoundsForAttribute } from '@/api/backend.api';
 import NextLink from 'next/link';
-
-const tableNames = {
-  clinical_annotations: 'clinical_annotation',
-  companies: 'company',
-  compounds: 'compound',
-  compound_names: 'compound_name',
-  diseases: 'disease',
-  gene_targets: 'gene_target',
-  indications: 'indication',
-  mechanisms_of_action: 'mechanism_of_action',
-  pathway_annotations: 'pathway_annotation',
-  repurposings: 'repurposing',
-  targets: 'target',
-};
+import { tableNames } from '@/utils';
 
 const attributeStringMap = {
   clinical_annotation: 'annotation',
@@ -79,20 +66,17 @@ const ListPage = () => {
 
   useEffect(() => {
     if (router.query.slug) {
-      const category = router.query.slug[0];
+      const tableName = router.query.slug[0];
       const id = router.query.slug[1];
       if (id) {
         (async () => {
-          const res = await getCompoundsForAttribute(
-            tableNames[category as keyof typeof tableNames],
-            id
-          );
+          const res = await getCompoundsForAttribute(tableName, id);
           if (res) {
-            const attribute = Object.keys(res)[0];
             const stringFieldForAttribute =
-              attributeStringMap[attribute as keyof typeof attributeStringMap];
+              attributeStringMap[tableName as keyof typeof attributeStringMap];
+
             setAttribute(
-              res[attribute as keyof typeof res][stringFieldForAttribute]
+              res[tableName as keyof typeof res][stringFieldForAttribute]
             );
             setListResults(res.compounds);
           }

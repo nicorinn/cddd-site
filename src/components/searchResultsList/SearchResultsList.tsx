@@ -1,6 +1,7 @@
 import { Box, Button, VStack, Text, Card, Divider } from '@chakra-ui/react';
 import { SearchResult, SearchResults } from '../../types';
 import NextLink from 'next/link';
+import { tableNames } from '@/utils';
 
 interface SearchResultsListProps {
   searchResults: SearchResults;
@@ -32,8 +33,9 @@ function renderCategoryResults(
       </Text>
       <VStack className="searchResults" spacing={0} ml={5}>
         {results.map((result) => {
+          const tableName = tableNames[category as keyof typeof tableNames];
           const urlFragment =
-            category === 'compounds' ? 'details' : `list/${category}`;
+            category === 'compounds' ? 'details' : `list/${tableName}`;
           return (
             <Box width="100%" key={result.id}>
               <NextLink href={`/${urlFragment}/${result.id}`}>

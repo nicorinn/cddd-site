@@ -16,12 +16,19 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import { getCompoundById } from '@/api/backend.api';
 import { isString } from 'lodash';
-import { Compound } from '@/types';
+import { AttributeListItem, Compound } from '@/types';
+import NextLink from 'next/link';
+import { tableNames } from '@/utils';
 
 const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
   const fontSize = useBreakpointValue({ base: 'sm', md: 'md', lg: 'lg' });
 
-  const displayArray = (label: string, array?: string[], badge = false) => {
+  const displayArray = (
+    label: string,
+    tableName: string,
+    array?: AttributeListItem[],
+    badge = false
+  ) => {
     return array && array.length > 0 ? (
       <VStack align="start" spacing={1} overflow="hidden">
         <Text fontSize={fontSize} fontWeight="bold">
@@ -29,17 +36,18 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
         </Text>
         {array.map((item, i) =>
           badge ? (
-            <Badge
-              key={i}
-              fontSize="sm"
-              overflow="scroll"
-              textOverflow="ellipsis"
-              maxW={400}
-            >
-              {item}
-            </Badge>
+            <NextLink key={i} href={`/list/${tableName}/${item.id}`}>
+              <Badge
+                fontSize="sm"
+                overflow="scroll"
+                textOverflow="ellipsis"
+                maxW={400}
+              >
+                {item.text}
+              </Badge>
+            </NextLink>
           ) : (
-            <Text key={i}>{item}</Text>
+            <Text key={i}>{item.text}</Text>
           )
         )}
       </VStack>
@@ -83,11 +91,24 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
             </Text>{' '}
             {compound.company}
           </Text>
-          {displayArray('Clinical Annotations', compound.clinical_annotations)}
-          {displayArray('Diseases', compound.diseases, true)}
-          {displayArray('Gene Targets', compound.gene_targets, true)}
-          {displayArray('Indications', compound.indications)}
-          {displayArray('Pathway Annotations', compound.pathway_annotations)}
+          {displayArray(
+            'Clinical Annotations',
+            'clinical_annotation',
+            compound.clinical_annotations
+          )}
+          {displayArray('Diseases', 'disease', compound.diseases, true)}
+          {displayArray(
+            'Gene Targets',
+            'gene_target',
+            compound.gene_targets,
+            true
+          )}
+          {displayArray('Indications', 'indication', compound.indications)}
+          {displayArray(
+            'Pathway Annotations',
+            'pathway_annotation',
+            compound.pathway_annotations
+          )}
         </VStack>
         <VStack align="start" spacing={4} width={stackWidth}>
           <Text fontSize={fontSize}>
@@ -142,15 +163,20 @@ const CompoundCard: React.FC<{ compound: Compound }> = ({ compound }) => {
             {new Date(compound.updated_at).toLocaleDateString()}
             {displayArray(
               'Repurposing Indications',
+              'indication',
               compound.repurposing_indications
             )}
           </Text>
           {compound.mechanisms_of_action?.length && (
             <Divider borderColor="gray.200" />
           )}
-          {displayArray('Mechanisms of Action', compound.mechanisms_of_action)}
+          {displayArray(
+            'Mechanisms of Action',
+            'mechanism_of_action',
+            compound.mechanisms_of_action
+          )}
           {compound.targets?.length && <Divider borderColor="gray.200" />}
-          {displayArray('Targets', compound.targets)}
+          {displayArray('Targets', 'target', compound.targets)}
         </VStack>
       </Flex>
     </Box>
